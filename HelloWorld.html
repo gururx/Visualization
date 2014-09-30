@@ -1,0 +1,131 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="widgets/lib/requirejs/require.js"></script>
+    <script src="widgets/config.js"></script>
+    <script>
+        requirejs.config({
+            baseUrl: "widgets"
+        });
+    </script>
+</head>
+<body>
+    <!--
+    -->
+    <div id="hwDiv" style="width:320px; height:240px">
+    </div>
+    <script>
+        require(["src/common/Text"], function (Text) {
+            var hwText = new Text()
+                .target("hwDiv")
+                .text("Hello\nWorld")
+                .render()
+            ;
+        });
+    </script>
+
+    <div id="bubbleDiv" style="width:320px; height:240px">
+    </div>
+    <script>
+        require(["src/chart/Bubble"], function (Bubble) {
+            var hwText = new Bubble()
+                .target("bubbleDiv")
+                .data([{ label: "Math", weight: 75 },
+                        { label: "Eng.", weight: 45 },
+                        { label: "Science", weight: 66, __viz_faChar: "\uf0c3" }])
+                .render()
+            ;
+        });
+    </script>
+
+    <div id="compositionDiv" style="width:320px; height:240px">
+
+    
+    </div>
+
+    <script>
+	require(["src/chart/Pie"], function ( Pie) {
+            var surface = new Pie()
+                .target("compositionDiv")
+                .data([{ label: "Math", weight: 32 },
+                            { label: "Eng.", weight: 87 },
+                            { label: "Science", weight: 66, __viz_faChar: "\uf0c3" }]
+                    )
+                .render()
+            ;
+        });
+   /*
+        require(["src/common/Surface", "src/chart/Pie"], function (Surface, Pie) {
+            var surface = new Surface()
+                .target("compositionDiv")
+                .title("I ate the Pie!")
+                .content(new Pie("compositionDiv")
+                    .data([{ label: "Math", weight: 32 },
+                            { label: "Eng.", weight: 87 },
+                            { label: "Science", weight: 66, __viz_faChar: "\uf0c3" }]
+                    )
+                )
+                .render()
+            ;
+        });
+
+     */
+    </script>
+
+    <div id="roxieDiv" style="width:320px; height:240px">
+    </div>
+    <script>
+        require(["src/other/Comms", "src/chart/Bubble"], function (Comms, Bubble) {
+            var wsEcl = new Comms.WsECL()
+                .ip("10.239.190.106")
+                .target("myroxie_dataland")
+                .query("fetched_ins002_stats")
+                .mappings({ "view_donut1": { "clean_error": "label", "cnt": "weight" } })
+                .call({ refresh: true }, function (response) {
+                    var roxieDiv = new Bubble()
+                        .target("roxieDiv")
+                        .data(response.view_donut1)
+                        .render()
+                    ;
+                })
+            ;
+        });
+    </script>
+    <div id="gridDiv" style="overflow: auto;width: 320px; height: 240px">
+    </div>
+    <script>
+        require(["src/other/Comms", "src/other/Table", "d3/d3"], function (Comms, Table, d3) {
+            var grid = new Table()
+                .target("gridDiv")
+            ;
+            var wsWorkunits = new Comms.WsWorkunits()
+                .ip("192.168.1.201")
+                .wuid("W20140815-132205")
+                //.sequence(12)
+                .resultName("Result 1")
+                .call(0, 50, function (response) {
+                    grid
+                        .data(response)
+                        .render()
+                    ;
+                })
+            ;
+        });
+    </script>
+
+    <div id="graphMarshaller" style="width:1024px; height:768px">
+    </div>
+    <script>
+        require(["src/chart/Bubble"], function (Bubble) {
+            var hwText = new Bubble()
+                .target("bubbleDiv")
+                .data([{ label: "Math", weight: 75 },
+                        { label: "Eng.", weight: 45 },
+                        { label: "Science", weight: 66, __viz_faChar: "\uf0c3" }])
+                .render()
+            ;
+        });
+    </script>
+</body>
+</html>
